@@ -17,21 +17,57 @@
 
 #build a getter and setter functions
 
+import inspect
+
 class RouteVar:
-	def __init__(self, RouteId, RouteVarId, RouteVarName, RouteVarShortName, RouteNo, StartStop, EndStop, Distance, OutBound, RunningTime):
+
+	def __init__(self, data):
+		RouteId, RouteVarId, RouteVarName, RouteVarShortName, RouteNo, StartStop, EndStop, Distance, OutBound, RunningTime = data
 		self._routeId = RouteId
 		self._routeVarId = RouteVarId
-		self.routeVarName = RouteVarName
-		self.routeVarShortName = RouteVarShortName
-		self.routeNo = RouteNo
-		self.startStop = StartStop
-		self.endStop = EndStop
-		self.distance = Distance
-		self.outBound = OutBound
-		self.runningTime = RunningTime
+		self._routeVarName = RouteVarName
+		self._routeVarShortName = RouteVarShortName
+		self._routeNo = RouteNo
+		self._startStop = StartStop
+		self._endStop = EndStop
+		self._distance = Distance
+		self._outBound = OutBound
+		self._runningTime = RunningTime
 
-	def get_start_end(self):
-		return {"startStop": self.startStop, "endStop": self.endStop}
+	@property
+	def routeVarName(self):
+		return self._routeVarName
+
+	@property
+	def routeVarShortName(self):
+		return self._routeVarShortName
+
+	@property
+	def routeNo(self):
+		return self._routeNo
+
+	@property
+	def startStop(self):
+		return self._startStop
+
+	@property
+	def endStop(self):
+		return self._endStop
+
+	@property
+	def distance(self):
+		return self._distance
+
+	@property
+	def runningTime(self):
+		return self._runningTime
+
+	@property
+	def outBound(self):
+		return self._outBound
+
+	def keys(self):
+		return inspect.getmembers(self)
 
 	def __str__(self):
-		return f"Route Variation ID: {self.routeVarId}, Route: {self.routeNo}, Start Stop: {self.startStop}, End Stop: {self.endStop}, Distance: {self.distance}, Outbound: {self.outbound}, Running Time: {self.runningTime}"
+		return f"Route Variation ID: {self._routeVarId}, Route: {self._routeNo}, Start Stop: {self._startStop}, End Stop: {self._endStop}, Distance: {self._distance}, Outbound: {self._outBound}, Running Time: {self._runningTime}"
