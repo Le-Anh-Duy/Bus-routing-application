@@ -39,21 +39,55 @@ Here i will specify the data that user can access and data that only admin can a
 - `RouteVarId`
 
 ```python
+
 class RouteVar:
 	def __init__(self, RouteId, RouteVarId, RouteVarName, RouteVarShortName, RouteNo, StartStop, EndStop, Distance, OutBound, RunningTime):
 		self._routeId = RouteId
 		self._routeVarId = RouteVarId
-		self.routeVarName = RouteVarName
-		self.routeVarShortName = RouteVarShortName
-		self.routeNo = RouteNo
-		self.startStop = StartStop
-		self.endStop = EndStop
-		self.distance = Distance
-		self.outBound = OutBound
-		self.runningTime = RunningTime
+		self._routeVarName = RouteVarName
+		self._routeVarShortName = RouteVarShortName
+		self._routeNo = RouteNo
+		self._startStop = StartStop
+		self._endStop = EndStop
+		self._distance = Distance
+		self._outBound = OutBound
+		self._runningTime = RunningTime
+
+	@property
+	def routeVarName(self):
+		return self._routeVarName
+
+	@property
+	def routeVarShortName(self):
+		return self._routeVarShortName
+
+	@property
+	def routeNo(self):
+		return self._routeNo
+
+	@property
+	def startStop(self):
+		return self._startStop
+
+	@property
+	def endStop(self):
+		return self._endStop
+
+	@property
+	def distance(self):
+		return self._distance
+
+	@property
+	def runningTime(self):
+		return self._runningTime
+
+	@property
+	def outBound(self):
+		return self._outBound
 
 	def __str__(self):
 		return f"Route Variation ID: {self.routeVarId}, Route: {self.routeNo}, Start Stop: {self.startStop}, End Stop: {self.endStop}, Distance: {self.distance}, Outbound: {self.outbound}, Running Time: {self.runningTime}"
+
 
 ```
 
@@ -66,3 +100,18 @@ So I will build a search funtions for each of the properties.
 - `searchByRouteID`
 -
 ##### 1.3.1 Search by `RouteID`
+##### 1.3.2 Build the `OutputAsCSV` method
+
+```python
+def outputAsCSV(sefl, _datas, dest, fields):
+	print(fields)
+	with open(dest, "w", newline="", encoding='utf8') as csvfile:
+		writer = csv.DictWriter(csvfile, fieldnames=fields)
+		writer.writeheader()
+		for row in _datas:
+			writer.writerow(row.__dict__)
+
+	csvfile.close()
+```
+
+In the `RouteVarQuery` class, I built this method to output the csv format. Using the 'csv' library
