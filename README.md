@@ -4,7 +4,7 @@ This will be my document of this solo-project.
 
 ---
 ## Week 05
-### 1. Working with `vars.json` files
+### 1. Working with `vars.json` file.
 
 #### 1.1. Analize the given file.
 
@@ -96,11 +96,29 @@ class RouteVar:
 The requirement is to build the search functions. These functions will let user search the route variations by their attributes, such that the attribute satisfies some constrains.
 
 So I will build a search funtions for each of the properties.
-**They are:**
-- `searchByRouteID`
--
-##### 1.3.1 Search by `RouteID`
-##### 1.3.2 Build the `OutputAsCSV` method
+
+
+
+##### 1.3.1 Search functions
+
+By using `cond` as a callback function, I will have more flexibility to customize the condition by the time the project has more and more conditions to check.
+
+From now, it is just a linear search that take all elements that satisfy the condition i put in..
+
+
+```python
+def searchBy(self, att, cond):
+	# cond - conditions - callback functions
+	retList = []
+
+	for element in self._list:
+		if cond(element[att]):
+			retList.append(element)
+
+	return retList
+```
+
+##### 1.3.2 Build the `OutputAsCSV` method.
 
 ```python
 def outputAsCSV(sefl, _datas, dest, fields):
@@ -115,3 +133,25 @@ def outputAsCSV(sefl, _datas, dest, fields):
 ```
 
 In the `RouteVarQuery` class, I built this method to output the csv format. Using the 'csv' library
+
+### 2. Working with `stop.json` file.
+This file contains data of stops, and
+#### 2.1. Build the `stop.class`.
+```python
+class Stop:
+    def __init__(self, StopId, Code, Name, StopType, Zone, Ward, AddressNo, Street, SupportDisability, Status, Lng, Lat, Search, Routes):
+        self._stopId = StopId
+        self._code = Code
+        self._name = Name
+        self._stopType = StopType
+        self._zone = Zone
+        self._ward = Ward
+        self._addressNo = AddressNo
+        self._street = Street
+        self._supportDisability = SupportDisability
+        self._status = Status
+        self._lng = Lng
+        self._lat = Lat
+        self._search = Search
+        self._routes = Routes
+```
