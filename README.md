@@ -12,7 +12,12 @@ Lets look at the `RouteVarQuery` and `StopQuery` classes, they have some method 
 
 So before implement the two classes, I will make a class names `query` which will contain all the similar method of the twos. So when i implement the `RouteVarQuery` and `StopQuery` classes, i just need to inherit from the `query` class and add in some functions that are specified for each kind of object.
 
-The code should look like this.
+
+
+
+#### 0.2. Inspecting the code.
+The code should look like this. It will act like a data structure that manage the data being put in it.
+
 ```python
 import json
 import csv
@@ -64,6 +69,28 @@ class query:
 
         jsonfile.close()
 ```
+
+##### 0.2.1. `push` and `load` functions.
+These functions will let users append new elements into our structure.
+
+##### 0.2.1. `searchBy` functions.
+
+We are required to search by prompting, so I think it is best to make the condition to be customizable.
+
+Due to the data set is not so big. Linear search might be just enough. And the `cond` will be a function that could be vary when executing.
+
+```python
+def searchBy(self, att, cond):
+	# cond - conditions - callback functions
+	retList = []
+
+	for element in self._list:
+		if cond(element[att]):
+			retList.append(element)
+
+	return retList
+```
+
 
 ### 1. Working with `vars.json` file.
 #### 1.1. Analize the given file.
