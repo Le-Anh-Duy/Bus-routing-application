@@ -4,8 +4,68 @@ This will be my document of this solo-project.
 
 ---
 ## Week 05
-### 1. Working with `vars.json` file.
 
+### 0. Prepare some external modules before implementing the files.
+#### 0.1. Analize the given requirements
+
+Lets look at the `RouteVarQuery` and `StopQuery` classes, they have some method that are pretimuch the same as each other.
+
+So before implement the two classes, I will make a class names `query` which will contain all the similar method of the twos. So when i implement the `RouteVarQuery` and `StopQuery` classes, i just need to inherit from the `query` class and add in some functions that are specified for each kind of object.
+
+The code should look like this.
+```python
+import json
+import csv
+from route_var import RouteVar
+from stop import Stop
+
+class query:
+
+    #_data should be a list of objects
+    def __init__(self):
+        self._list = []
+
+
+    def push(self, element):
+        self._list.append(element)
+
+    def load(self, elements):
+        for ele in elements:
+            self._list.append(ele)
+
+    def searchBy(self, att, cond):
+        # cond - conditions - callback functions
+        retList = []
+
+        for element in self._list:
+            if cond(element[att]):
+                retList.append(element)
+
+        return retList
+
+    # _datas should be a list dictionary
+    # fields is your list of headers
+    def outputAsCSV(self, _datas, dest, fields):
+
+        # print(fields)
+        with open(dest, "w", newline="", encoding='utf8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fields)
+            writer.writeheader()
+            for row in _datas:
+                writer.writerow(row.__dict__)
+
+        csvfile.close()
+
+    def outputAsJSON(self, _datas, dest):
+        with open(dest, "w", encoding="utf-8") as jsonfile:
+            for obj in _datas:
+                json.dump([obj.__dict__], jsonfile, ensure_ascii=False)
+                jsonfile.write('\n')
+
+        jsonfile.close()
+```
+
+### 1. Working with `vars.json` file.
 #### 1.1. Analize the given file.
 
 The file contain some lists, each in one row, and may contain, zero or more the info of some bus routes, and its variations.
@@ -92,50 +152,13 @@ class RouteVar:
 ```
 
 #### 1.3. Build the `RouteVarQuery` class.
-
-The requirement is to build the search functions. These functions will let user search the route variations by their attributes, such that the attribute satisfies some constrains.
-
-So I will build a search funtions for each of the properties.
-
-
-
-##### 1.3.1 Search functions
-
-By using `cond` as a callback function, I will have more flexibility to customize the condition by the time the project has more and more conditions to check.
-
-From now, it is just a linear search that take all elements that satisfy the condition i put in..
-
-
-```python
-def searchBy(self, att, cond):
-	# cond - conditions - callback functions
-	retList = []
-
-	for element in self._list:
-		if cond(element[att]):
-			retList.append(element)
-
-	return retList
-```
-
-##### 1.3.2 Build the `OutputAsCSV` method.
-
-```python
-def outputAsCSV(sefl, _datas, dest, fields):
-	print(fields)
-	with open(dest, "w", newline="", encoding='utf8') as csvfile:
-		writer = csv.DictWriter(csvfile, fieldnames=fields)
-		writer.writeheader()
-		for row in _datas:
-			writer.writerow(row.__dict__)
-
-	csvfile.close()
-```
-
-In the `RouteVarQuery` class, I built this method to output the csv format. Using the 'csv' library
-
 ### 2. Working with `stop.json` file.
-This file contains data of stops, and
+This file contains data of stops, and stop properties to work with.
+
+**Those are:**
+- `StopId`
+- `Code`
+
 #### 2.1. Build the `stop.class`.
 ```python
 class Stop:
