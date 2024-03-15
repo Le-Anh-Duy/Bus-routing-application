@@ -66,8 +66,19 @@ class RouteVar:
 	def outBound(self):
 		return self._outBound
 
-	def keys(self):
-		return inspect.getmembers(self)
+	def get_keys(self):
+		return [
+			"_routeId",
+			"_routeVarId",
+			"_routeVarName",
+			"_routeVarShortName",
+			"_routeNo",
+			"_startStop",
+			"_endStop",
+			"_distance",
+			"_outBound",
+			"_runningTime"
+		]
 
-	def __str__(self):
-		return f"Route Variation ID: {self._routeVarId}, Route: {self._routeNo}, Start Stop: {self._startStop}, End Stop: {self._endStop}, Distance: {self._distance}, Outbound: {self._outBound}, Running Time: {self._runningTime}"
+	def __str__(self) -> dict:
+		return str(self.__dict__)

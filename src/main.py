@@ -1,25 +1,24 @@
-# main to test the code
+# # main to test the code
 from route_var_query import RouteVarQuery
 from route_var import RouteVar
 import json
+from query import query
 
-tmp = []
+tmp = [] #list of vars
 with open("../data/vars.json", "r", encoding="utf8") as file:
     for line in file:
         data = json.loads(line)
+        for d in data: # d is a dict
+            value_of_field = []
+            for v in d:
+                value_of_field.append(d[v])
+            print(value_of_field)
 
-        for d in data:
-            list = []
-            for field in d:
-                list.append(d[field])
-
-            tmp.append(RouteVar(list))
+        tmp.append(RouteVar(value_of_field))
 
 
-myQuery = RouteVarQuery(tmp)
-ls = myQuery._list[0].__dict__
-fields = []
-for field in ls:
-    fields.append(field)
-print(fields)
-myQuery.outputAsCSV(myQuery._list, "test.csv", fields)
+
+myQuery = query()
+myQuery.load(tmp)
+myQuery.outputAsCSV(myQuery._list, "test01.csv", tmp[0].get_keys())
+myQuery.outputAsJSON(myQuery._list, "test01.json")

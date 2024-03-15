@@ -80,10 +80,10 @@ class Stop:
 
     # Add other setter methods for properties as needed
 
-# Example usage:
-stop = Stop(1, "ABC", "Main Street", "Bus Stop", 1, "Central", 123, "Main St.", True, "Active", -73.987, 40.748, "Main St. Bus Stop", ["Route1", "Route2"])
-print(stop.name)  # Output: Main Street
+# # Example usage:
+# stop = Stop(1, "ABC", "Main Street", "Bus Stop", 1, "Central", 123, "Main St.", True, "Active", -73.987, 40.748, "Main St. Bus Stop", ["Route1", "Route2"])
+# print(stop.name)  # Output: Main Street
 
-# Example setter usage
-stop.name = "New Main Street"
-print(stop.name)  # Output: New Main Street
+# # Example setter usage
+# stop.name = "New Main Street"
+# print(stop.name)  # Output: New Main Street
