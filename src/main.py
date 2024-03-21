@@ -18,7 +18,7 @@ with open("../data/vars.json", "r", encoding="utf8") as file:
 
 
 
-myQuery = query()
+myQuery = RouteVarQuery()
 myQuery.load(tmp)
 myQuery.outputAsCSV(myQuery._list, "test01.csv", tmp[0].get_keys())
 myQuery.outputAsJSON(myQuery._list, "test01.json")

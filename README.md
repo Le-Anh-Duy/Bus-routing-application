@@ -205,3 +205,33 @@ class Stop:
         self._search = Search
         self._routes = Routes
 ```
+
+
+## Week 06
+### 1. Using `pyproj` to convert a (lat, lng) to (x, y).
+### 2. Research bout `geojson.io`.
+[geojson.io](htpp://geojson.io/) is a quick, simple tool for creating, viewing, and sharing spatial data. This website uses `.geojson` format to plot the data onto it.
+
+#### 2.1. `.geojson` format.
+GeoJSON is a format for encoding a variety of geographic data structures. And this format is not so hard.
+```json
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [125.6, 10.1]
+  },
+  "properties": {
+    "name": "Dinagat Islands"
+  }
+}
+```
+
+GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, and MultiPolygon. Geometric objects with additional properties are Feature objects. Sets of features are contained by FeatureCollection objects.
+
+- The additional properties could be any of the user define properties.
+- The coordinate reference system for all GeoJSON coordinates is a geographic coordinate reference system, using the World Geodetic System 1984 (WGS 84) [WGS84] datum, with longitude and latitude units of decimal degrees.
+- The coordinate object can be a pair of coordinates, or a list of coordinates to represent different type of shape in geojson.
+    - `Point`, need a pair of coordinate
+    - `LineString`, need a list of the pair of two coordinate to represent the starting point and ending point of a string
+    - `Polygon`, for a polygon with `n` vertices to be ploted, we need a list of `n + 1` point that are arranged in clockwise/counter clockwise order, with the first and the last point are the same.

@@ -80,5 +80,19 @@ class RouteVar:
 			"_runningTime"
 		]
 
+	def to_dict(self):
+		return {
+			'routeId': self._routeId,
+			'routeVarId': self._routeVarId,
+			'routeVarName': self._routeVarName,
+			'routeVarShortName': self._routeVarShortName,
+			'routeNo': self._routeNo,
+			'startStop': self._startStop,
+			'endStop': self._endStop,
+			'distance': self._distance,
+			'outBound': self._outBound,
+			'runningTime': self._runningTime
+		}
+
 	def __str__(self) -> dict:
 		return str(self.__dict__)

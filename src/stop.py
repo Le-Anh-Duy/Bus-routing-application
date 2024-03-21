@@ -1,5 +1,6 @@
 class Stop:
-    def __init__(self, StopId, Code, Name, StopType, Zone, Ward, AddressNo, Street, SupportDisability, Status, Lng, Lat, Search, Routes):
+    def __init__(self, datas):
+        StopId, Code, Name, StopType, Zone, Ward, AddressNo, Street, SupportDisability, Status, Lng, Lat, Search, Routes = datas
         self._stopId = StopId
         self._code = Code
         self._name = Name
@@ -70,6 +71,24 @@ class Stop:
     @property
     def routes(self):
         return self._routes
+
+    def to_dict(self):
+        return {
+            'stopId': self._stopId,
+            'code': self._code,
+            'name': self._name,
+            'stopType': self._stopType,
+            'zone': self._zone,
+            'ward': self._ward,
+            'addressNo': self._addressNo,
+            'street': self._street,
+            'supportDisability': self._supportDisability,
+            'status': self._status,
+            'lng': self._lng,
+            'lat': self._lat,
+            'search': self._search,
+            'routes': self._routes
+        }
 
     # Add setter methods for properties that need to be modified
 
