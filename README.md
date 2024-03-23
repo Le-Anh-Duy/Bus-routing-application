@@ -209,6 +209,31 @@ class Stop:
 
 ## Week 06
 ### 1. Using `pyproj` to convert a (lat, lng) to (x, y).
+When working on a Geograhic Coordinate Systems, especially working on a small area, and need the data that you calculate to be as precise and effectively as possible, you might need to convert (lat, lng) coordinate to (x, y) coordinate using some converting standard.
+
+The given data was given in (lat, lng) standard and can be ploted onto `geojson.io`, which is currently in $\texttt{WGS84}$ standard (that represent the Earth as a sphere). Therefore, using (lat, lng) to perform distance or other calculation will take a lot of effort and invole many trigonometry functions, which will dramatically decrease the performance of our programe.
+
+So, we need first convert $\texttt{WGS84}$ to $\texttt{EPSG: 3405}$, which is northen Vietname standard, that uses the projected (lat, lng) coordinate of a sphere to the coordinate of a plane (x, y).
+
+$\textbf{The program}$
+
+```python
+from pyproj import Transformer
+# Input CRS (geographic coordinates)
+input_crs = "EPSG:4326"
+# Output CRS (projected coordinate system for Vietnam)
+output_crs = "EPSG:3405"  # VN-2000 / UTM zone 48N
+
+class converter:
+    def __init__(self):
+        self.transformer = Transformer.from_crs(input_crs, output_crs)
+    def convert(self, latitude, longitude):
+        x, y = self.transformer.transform(latitude, longitude)
+        return x, y
+```
+
+For the simplycity and the reuseability of the code, i will put it in a class and make it a module.
+
 ### 2. Research bout `geojson.io`.
 [geojson.io](htpp://geojson.io/) is a quick, simple tool for creating, viewing, and sharing spatial data. This website uses `.geojson` format to plot the data onto it.
 
@@ -235,3 +260,9 @@ GeoJSON supports the following geometry types: Point, LineString, Polygon, Multi
     - `Point`, need a pair of coordinate
     - `LineString`, need a list of the pair of two coordinate to represent the starting point and ending point of a string
     - `Polygon`, for a polygon with `n` vertices to be ploted, we need a list of `n + 1` point that are arranged in clockwise/counter clockwise order, with the first and the last point are the same.
+
+
+## Week 07
+
+## References
+(to learn mor about geographical coordinates info)[https://8thlight.com/insights/geographic-coordinate-systems-101]
