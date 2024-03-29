@@ -97,7 +97,13 @@ class Stop:
     def name(self, new_name):
         self._name = new_name
 
+    @property
+    def coordinates(self):
+        return self._lat, self._lng
     # Add other setter methods for properties as needed
+
+    def __eq__(self, __value):
+        return self.stopId == __value.stopId and self.code == __value.code and self.name == __value.name and self.stopType == __value.stopType and self.zone == __value.zone and self.ward == __value.ward and self.addressNo == __value.addressNo and self.street == __value.street and self.supportDisability == __value.supportDisability and self.status == __value.status and self.lng == __value.lng and self.lat == __value.lat and self.search == __value.search and self.routes == __value.routes
 
 # # Example usage:
 # stop = Stop(1, "ABC", "Main Street", "Bus Stop", 1, "Central", 123, "Main St.", True, "Active", -73.987, 40.748, "Main St. Bus Stop", ["Route1", "Route2"])

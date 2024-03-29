@@ -2,13 +2,17 @@ import json
 import folium
 
 def create_geojson(latitudes, longitudes, filename='map.geojson'):
-    features = []
-    for lat, lon in zip(latitudes, longitudes):
+    features = []  # Connect the last point to the first point
+    for i in range(len(latitudes) - 1):
+        j = (i + 1)
         feature = {
             "type": "Feature",
             "geometry": {
-                "type": "Point",
-                "coordinates": [lon, lat]
+                "type": "LineString",
+                "coordinates": [
+                    [longitudes[i], latitudes[i]],
+                    [longitudes[j], latitudes[j]]
+                ]
             },
             "properties": {}
         }

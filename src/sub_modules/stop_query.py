@@ -70,18 +70,42 @@ class StopQuery(query):
                     tmp.append(Stop(value_of_field))
         self._list = tmp
 
+    def remove_duplicate(self):
+        if len(self._list) == 0:
+            return
+        self._list.sort(key=lambda x: x.stopId)
+        newList = []
+        newList.append(self._list[0])
+        for i in range(1, len(self._list)):
+            if not(self._list[i] == self._list[i-1]):
+                newList.append(self._list[i])
+
+        self._list = newList
+
 test = StopQuery()
-test.extract("../data/stops.json")
+test.extract("../../data/stops.json")
+# test._list = list(set(test._list))
+test.remove_duplicate()
 test.outputAsJSON(test._list, "test.json")
 
-test2 = RouteOfStopQuery()
-test2.extract("../data/stops.json")
-test2.outputAsJSON(test2._list, "listStops.json")
+# test2 = RouteOfStopQuery()
+# test2.extract("../../data/stops.json")
+# test2.outputAsJSON(test2._list, "listStops.json")
 
-def cond(listAtt):
-    return listAtt[0] == "1" and listAtt[1] == "1"
+# def cond(listAtt):
+#     return listAtt[0] == "1" and listAtt[1] == "1"
 
-f = test2.searchBy(["RouteId", "RouteVarId"], cond)
+# f = test2.searchBy(["RouteId", "RouteVarId"], cond)
 
-print(test2._list[0].RouteId)
-print(len(f[0].stops))
+# print(test2._list[0].RouteId)
+# print(f[0].stops)
+
+# from test import create_geojson, plot_on_map
+
+# lat = []
+# lng = []
+# for stop in f[0].stops:
+#     lat.append(stop.lat)
+#     lng.append(stop.lng)
+
+# create_geojson(lat, lng, filename='map.geojson')

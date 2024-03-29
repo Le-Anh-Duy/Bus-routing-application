@@ -1,28 +1,24 @@
 # solo-project
 
-This will be my document of this solo-project.
-
+Technical report on solo project
 ---
 ## Week 05
+### 1. Prepare some external modules before implementing the requering classes.
+#### 1.1. Analize the given requirements
 
-### 0. Prepare some external modules before implementing the files.
-#### 0.1. Analize the given requirements
+Lets look at the `RouteVarQuery` and `StopQuery` classes, they have some method that are prety much the same.
 
-Lets look at the `RouteVarQuery` and `StopQuery` classes, they have some method that are pretimuch the same as each other.
-
-So before implement the two classes, I will make a class names `query` which will contain all the similar method of the twos. So when i implement the `RouteVarQuery` and `StopQuery` classes, i just need to inherit from the `query` class and add in some functions that are specified for each kind of object.
-
+So before implementing the two classes, I will make a class names `query` which will contain all the similar method of the twos. So when I implement the `RouteVarQuery` and `StopQuery` classes, I just need to inherit from the `query` class and add in some functions that are specified for each kind of object.
 
 
-
-#### 0.2. Inspecting the code.
+#### 1.2. Inspecting the code.
 The code should look like this. It will act like a data structure that manage the data being put in it.
+
+
 
 ```python
 import json
 import csv
-from route_var import RouteVar
-from stop import Stop
 
 class query:
 
@@ -70,14 +66,16 @@ class query:
         jsonfile.close()
 ```
 
-##### 0.2.1. `push` and `load` functions.
-These functions will let users append new elements into our structure.
+##### 1.2.1. `push` and `load` functions.
+Because the class will be uses to manage a list of objects, so these functions will let users append new elements into our structure.
 
-##### 0.2.1. `searchBy` functions.
+##### 1.2.1. `searchBy` functions.
 
 We are required to search by prompting, so I think it is best to make the condition to be customizable.
 
 Due to the data set is not so big. Linear search might be just enough. And the `cond` will be a function that could be vary when executing.
+
+My plan is to use chat-gpt to process the prompting and extract the conditions and the attributes for me then I would process that result base on the desires of user want to find by locations, times, ect....
 
 ```python
 def searchBy(self, att, cond):
@@ -92,8 +90,8 @@ def searchBy(self, att, cond):
 ```
 
 
-### 1. Working with `vars.json` file.
-#### 1.1. Analize the given file.
+### 2. Working with `vars.json` file.
+#### 2.1. Analize the given file.
 
 The file contain some lists, each in one row, and may contain, zero or more the info of some bus routes, and its variations.
 
@@ -103,30 +101,15 @@ The file contain some lists, each in one row, and may contain, zero or more the 
 
 These properties give us a clear understand how the data is organized in `vars.json` file.
 
-#### 1.2. Build the `RouteVar` class.
+#### 2.2. Build the `RouteVar` class.
+
 **The code for the first requirement**
-A simple class with every properties of a route variations.
 
-Each variation need to have its `RouteId` to denote it is a variations of a route.
+A simple class with every properties of a route variation.
 
-To avoid user can accidentally modify any of the properties, every properties will be protected. So they will only be access through a getter functions.
-Here i will specify the data that user can access and data that only admin can access.
-<!-- To avoid user -->
-**Users:**
-- `RouteNo`
-- `RouteVarName`
-- `RouteVarShortName`
-- `StartStop`
-- `EndStop`
-- `RunningTime`
-- `OutBound`
-
-**Admin:**
-- `RouteID`
-- `RouteVarId`
+To avoid accidentally modify any of the properties, every properties will be protected. So they will only be access through a getter function (those functions will be implemented in the code, but for the readability of this report, I will not include).
 
 ```python
-
 class RouteVar:
 	def __init__(self, RouteId, RouteVarId, RouteVarName, RouteVarShortName, RouteNo, StartStop, EndStop, Distance, OutBound, RunningTime):
 		self._routeId = RouteId
@@ -139,54 +122,47 @@ class RouteVar:
 		self._distance = Distance
 		self._outBound = OutBound
 		self._runningTime = RunningTime
-
-	@property
-	def routeVarName(self):
-		return self._routeVarName
-
-	@property
-	def routeVarShortName(self):
-		return self._routeVarShortName
-
-	@property
-	def routeNo(self):
-		return self._routeNo
-
-	@property
-	def startStop(self):
-		return self._startStop
-
-	@property
-	def endStop(self):
-		return self._endStop
-
-	@property
-	def distance(self):
-		return self._distance
-
-	@property
-	def runningTime(self):
-		return self._runningTime
-
-	@property
-	def outBound(self):
-		return self._outBound
-
-	def __str__(self):
-		return f"Route Variation ID: {self.routeVarId}, Route: {self.routeNo}, Start Stop: {self.startStop}, End Stop: {self.endStop}, Distance: {self.distance}, Outbound: {self.outbound}, Running Time: {self.runningTime}"
-
-
 ```
 
-#### 1.3. Build the `RouteVarQuery` class.
-### 2. Working with `stop.json` file.
-This file contains data of stops, and stop properties to work with.
+#### 2.3. Build the `RouteVarQuery` class.
 
-**Those are:**
-- `StopId`
-- `Code`
+As planed above, this class will inherit from the query class above for some of the functions. But due to the differences from the layout of each file, the `extract` function will be implemented separately.
 
-#### 2.1. Build the `stop.class`.
+```python
+from query import query
+from route_var import RouteVar
+import json
+import csv
+
+class RouteVarQuery(query):
+    def __init__(self):
+        super().__init__()
+
+    def extract(self, dest):
+        tmp = []
+        with open(dest, "r", encoding="utf8") as file:
+            for line in file:
+                data = json.loads(line)
+                for d in data: # d is a dict
+                    value_of_field = []
+                    for v in d:
+                        value_of_field.append(d[v])
+                    print(value_of_field)
+
+                tmp.append(RouteVar(value_of_field))
+        self._list = tmp
+```
+
+### 3. Working with `stop.json` file.
+
+This file contains a series of stops on each line, these stop will represent the path that the bus will take, they belong to some route variations. So in each line, there are the `routeId` and `routeVarId` attached to the list of stops.
+
+To extract the stops, I extracted the stops from the stop list of each route. Therefore, some of the stop, which are belong to multiple routes, will be duplicated and I handle that situation in the later part of this sections.
+
+#### 3.1. Build the `stop` class.
+
+First we need to build the `stop` class, which contains all the necessary properties of the stops.
+
 ```python
 class Stop:
     def __init__(self, StopId, Code, Name, StopType, Zone, Ward, AddressNo, Street, SupportDisability, Status, Lng, Lat, Search, Routes):
@@ -206,6 +182,44 @@ class Stop:
         self._routes = Routes
 ```
 
+### 3.2. Build the stop `stopQuerry` class.
+
+This class will have the same functionalities with the above class, but with an additional `remove_duplicate` functions.
+
+```python
+class StopQuery(query):
+    def __init__(self):
+        super().__init__()
+
+    def extract(self, dest):
+        # Detail implementation are in the file
+
+    def remove_duplicate(self):
+        # Detail implementation are in the file
+```
+
+### 3.3. Two additional classes.
+
+To get the most out of the `stops.json` file, we need to have way to manage the stops along the route variations. So I made two more classes.
+
+The first one is to manage stops along the route, and the second one is to query each route.
+```python
+class RouteOfStop():
+    def __init__(self, stops, RouteId, RouteVarId):
+        self._stops = stops
+        self._RouteId = RouteId
+        self._RouteVarId = RouteVarId
+```
+
+```python
+
+class RouteOfStopQuery(query):
+    def __init__(self):
+        super().__init__()
+
+    def extract(self, dest):
+        # detail implementation is in the stop_query file.
+```
 
 ## Week 06
 ### 1. Using `pyproj` to convert a (lat, lng) to (x, y).
@@ -261,8 +275,70 @@ GeoJSON supports the following geometry types: Point, LineString, Polygon, Multi
     - `LineString`, need a list of the pair of two coordinate to represent the starting point and ending point of a string
     - `Polygon`, for a polygon with `n` vertices to be ploted, we need a list of `n + 1` point that are arranged in clockwise/counter clockwise order, with the first and the last point are the same.
 
+- Note: the coordinate should be lng/lat in geojson
+
+### 3. `Path` and `PathQuery` classes.
+
+### 4.  Research about `shapely` library in python.
+#### 4.1. Overview
+
+`shapely` is a python library for working with geometric objects in two-dimensional space. It is open-source and BSD-licensed
+
+It is usally used to create, maniplulate, and analize geometric objects like points, lines, polygons.... `shaply` provide user-friendly interface for geometric data. Therefore, it is ideal to choose `shapely` for tasks involving spatial data analysis, like:
+- Finding areas and perimeters.
+- Checking for geometric relationships, (intersection, containment,...).
+- Performing spatial operation, (buffering, offset, ...).
+
+#### 4.2. Usefull functions
+
+- `object.area`: Returns the area (`float`) of the object.
+
+- `object.bounds`: Returns a `(minx, miny, maxx, maxy)` tuple (float values) that bounds the object.
+
+- `object.length`: Returns the length (`float`) of the object.
+
+- `object.distance(other)`: Returns the minimum distance (`float`) to the other geometric object.
+- `object.hausdorff_distance(other)`: Returns the Hausdorff distance (`float`) to the other geometric object. The Hausdorff distance between two geometries is the furthest distance that a point on either geometry can be from the nearest point to it on the other geometry.
+
+- `object.intersection(other)`: Returns a collection of every type of intersected object.
+
+- `object.interpolate(distance[, normalized=False])`: Return a point at the specified distance along a linear geometric object. The distance will be calculated from the starting point, *go along* with the line string (the linestring will act like a paht):
+    - If the destinated point lies on the LineString, it is the length of the begining point to that point.
+    - If the destinated point does not lie on the LineString, it is the length of the beginning point to a point on the linestring, such that, the point is the first closest point from the begining.
+```python
+from shapely import Point, LineString
+ip = Point(0.5, 0.5)
+line = LineString([(0, 0), (1, 0), (1, 1), (0, 1)])
+dist = line.project(ip)  # dist is now 0.5 not 1.5 or 2.5
+```
+
+**Can be used to solve:** finding distance between stops.
+
+- `object.intersection(other)` and `object.interpolate(distance[, normalized=False])` will be often use.
+
+### 4.3. Intended usages.
+
+**will fill out later**
+
+### 5. Research about `rtree` library in python.
+### 5.1 Overview.
+
+RTree is a powerful spatial data management systems, which provide you with efficently spatial queries (search for nearest point, etc...).
+
+Although `RTree` is so powerfull with spatial data, in this project, we might only use it to find the nearest point from a set of points along the bus route to our current location/destination.
 
 ## Week 07
 
+In this week's assignments I need to build graph, and doing a shortest path finding algorithm on this graph.
+
+*Things to plan out:*
+- Graph structure
+- Graph logic, construction, considered point...
+-
+*To do:*
+- Extract and build graph.
+- plan to construct the graph, step by step
+
 ## References
 (to learn mor about geographical coordinates info)[https://8thlight.com/insights/geographic-coordinate-systems-101]
+(Using shapely)[https://shapely.readthedocs.io/en/stable/manual.html#general-attributes-and-methods]

@@ -7,7 +7,7 @@ class path_query(query):
         super().__init__()
 
     def extract(self):
-        with open("../data/paths.json", "r", encoding="utf8") as file:
+        with open("../../data/paths.json", "r", encoding="utf8") as file:
             for line in file:
                 data = json.loads(line)
                 self.push(path([data["lat"], data["lng"], data["RouteId"], data["RouteVarId"]]))
