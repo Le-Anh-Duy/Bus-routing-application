@@ -90,12 +90,68 @@ class Stop:
             'routes': self._routes
         }
 
-    # Add setter methods for properties that need to be modified
+    def get_keys(self):
+        return [
+            "_stopId",
+            "_code",
+            "_name",
+            "_stopType",
+            "_zone",
+            "_ward",
+            "_addressNo",
+            "_street",
+            "_supportDisability",
+            "_status",
+            "_lng",
+            "_lat",
+            "_search",
+            "_routes"
+        ]
 
-    # Example setter for demonstration
+    # Add setter methods for properties that need to be modified
     @name.setter
     def name(self, new_name):
         self._name = new_name
+
+    @stopType.setter
+    def stopType(self, new_stopType):
+        self._stopType = new_stopType
+
+    @zone.setter
+    def zone(self, new_zone):
+        self._zone = new_zone
+
+    @addressNo.setter
+    def addressNo(self, new_addressNo):
+        self._addressNo = new_addressNo
+
+    @street.setter
+    def street(self, new_street):
+        self._street = new_street
+
+    @supportDisability.setter
+    def supportDisability(self, new_supportDisability):
+        self._supportDisability = new_supportDisability
+
+    @status.setter
+    def status(self, new_status):
+        self._status = new_status
+
+    @lng.setter
+    def lng(self, new_lng):
+        self._lng = new_lng
+
+    @lat.setter
+    def lat(self, new_lat):
+        self._lat = new_lat
+
+    @search.setter
+    def search(self, new_search):
+        self._search = new_search
+
+    @routes.setter
+    def routes(self, new_routes):
+        self._routes = new_routes
 
     @property
     def coordinates(self):

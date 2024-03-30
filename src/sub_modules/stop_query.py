@@ -1,5 +1,5 @@
-from stop import Stop
-from query import query
+from sub_modules.stop import Stop
+from sub_modules.query import query
 import json
 import csv
 
@@ -69,6 +69,8 @@ class StopQuery(query):
                         value_of_field.append(stop[v])
                     tmp.append(Stop(value_of_field))
         self._list = tmp
+        file.close()
+        print("extracted stop data")
 
     def remove_duplicate(self):
         if len(self._list) == 0:
@@ -82,11 +84,11 @@ class StopQuery(query):
 
         self._list = newList
 
-test = StopQuery()
-test.extract("../../data/stops.json")
-# test._list = list(set(test._list))
-test.remove_duplicate()
-test.outputAsJSON(test._list, "test.json")
+# test = StopQuery()
+# test.extract("../../data/stops.json")
+# # test._list = list(set(test._list))
+# test.remove_duplicate()
+# test.outputAsJSON(test._list, "test.json")
 
 # test2 = RouteOfStopQuery()
 # test2.extract("../../data/stops.json")

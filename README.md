@@ -2,7 +2,7 @@
 
 Technical report on solo project
 ---
-## Week 05
+## Week 05 (Finished)
 ### 1. Prepare some external modules before implementing the requering classes.
 #### 1.1. Analize the given requirements
 
@@ -11,10 +11,8 @@ Lets look at the `RouteVarQuery` and `StopQuery` classes, they have some method 
 So before implementing the two classes, I will make a class names `query` which will contain all the similar method of the twos. So when I implement the `RouteVarQuery` and `StopQuery` classes, I just need to inherit from the `query` class and add in some functions that are specified for each kind of object.
 
 
-#### 1.2. Inspecting the code.
+#### 1.2. Inspecting the code [`query.py`](./src/sub_modules/query.py).
 The code should look like this. It will act like a data structure that manage the data being put in it.
-
-
 
 ```python
 import json
@@ -27,70 +25,51 @@ class query:
         self._list = []
 
 
-    def push(self, element):
-        self._list.append(element)
+    def push(self, element): #insert sigle element
+        #detail is in the code
+        pass
 
-    def load(self, elements):
-        for ele in elements:
-            self._list.append(ele)
+    def load(self, elements): # insert a list to query
+        #detail is in the code
+        pass
 
-    def searchBy(self, att, cond):
-        # cond - conditions - callback functions
-        retList = []
+    def searchBy(self, atts, messageCond, className): #list att
+        def cond(a, conditions):
+            #detail of this functions is in the code
+        #detail is in the code
+        pass
 
-        for element in self._list:
-            if cond(element[att]):
-                retList.append(element)
-
-        return retList
-
-    # _datas should be a list dictionary
-    # fields is your list of headers
     def outputAsCSV(self, _datas, dest, fields):
-
-        # print(fields)
-        with open(dest, "w", newline="", encoding='utf8') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fields)
-            writer.writeheader()
-            for row in _datas:
-                writer.writerow(row.__dict__)
-
-        csvfile.close()
+        #detail is in the code
+        pass
 
     def outputAsJSON(self, _datas, dest):
-        with open(dest, "w", encoding="utf-8") as jsonfile:
-            for obj in _datas:
-                json.dump([obj.__dict__], jsonfile, ensure_ascii=False)
-                jsonfile.write('\n')
-
-        jsonfile.close()
+        #detail is in the code
+        pass
 ```
 
 ##### 1.2.1. `push` and `load` functions.
 Because the class will be uses to manage a list of objects, so these functions will let users append new elements into our structure.
 
-##### 1.2.1. `searchBy` functions.
+##### 1.2.2. `searchBy(seft, atts, messageCond, className)` functions.
 
 We are required to search by prompting, so I think it is best to make the condition to be customizable.
 
-Due to the data set is not so big. Linear search might be just enough. And the `cond` will be a function that could be vary when executing.
+Due to the data set is not so big, linear search might be just enough. And the `cond(a, conditions)` will be a function that can evaluate the a string conditions.
 
-My plan is to use chat-gpt to process the prompting and extract the conditions and the attributes for me then I would process that result base on the desires of user want to find by locations, times, ect....
+My plan is to use some LLM to process the prompting and extract the conditions and the attributes for me then I would process that result base on the desires of user want to find by locations, times, ect....
 
+For example: By runing the following script will give us a list, and some log messages.
 ```python
-def searchBy(self, att, cond):
-	# cond - conditions - callback functions
-	retList = []
-
-	for element in self._list:
-		if cond(element[att]):
-			retList.append(element)
-
-	return retList
+searchBy(["_runningTime", "_distance"], "a[0] < 100 and a[1] < 50000", "routeVar")
 ```
+*output:*
+![alt text](image-1.png)
 
+##### 1.2.3. `outputAsCSV` and `outputAsJSON`.
+These functions are uses to output the desired format for user.
 
-### 2. Working with `vars.json` file.
+### 2. Working with [`vars.json`](./data/vars.json) file.
 #### 2.1. Analize the given file.
 
 The file contain some lists, each in one row, and may contain, zero or more the info of some bus routes, and its variations.
@@ -103,12 +82,11 @@ These properties give us a clear understand how the data is organized in `vars.j
 
 #### 2.2. Build the `RouteVar` class.
 
-**The code for the first requirement**
-
 A simple class with every properties of a route variation.
 
 To avoid accidentally modify any of the properties, every properties will be protected. So they will only be access through a getter function (those functions will be implemented in the code, but for the readability of this report, I will not include).
 
+*The code is in [`route_var.py`](./src/sub_modules/route_var.py):*
 ```python
 class RouteVar:
 	def __init__(self, RouteId, RouteVarId, RouteVarName, RouteVarShortName, RouteNo, StartStop, EndStop, Distance, OutBound, RunningTime):
@@ -128,6 +106,7 @@ class RouteVar:
 
 As planed above, this class will inherit from the query class above for some of the functions. But due to the differences from the layout of each file, the `extract` function will be implemented separately.
 
+*The code is in [`route_var_query.py`](./src/sub_modules/route_var_query.py)*
 ```python
 from query import query
 from route_var import RouteVar
@@ -153,7 +132,7 @@ class RouteVarQuery(query):
         self._list = tmp
 ```
 
-### 3. Working with `stop.json` file.
+### 3. Working with [`stop.json`](./data/stops.json) file.
 
 This file contains a series of stops on each line, these stop will represent the path that the bus will take, they belong to some route variations. So in each line, there are the `routeId` and `routeVarId` attached to the list of stops.
 
@@ -163,6 +142,7 @@ To extract the stops, I extracted the stops from the stop list of each route. Th
 
 First we need to build the `stop` class, which contains all the necessary properties of the stops.
 
+*The code is in [`stop.py`](./src/sub_modules/stop.py)*
 ```python
 class Stop:
     def __init__(self, StopId, Code, Name, StopType, Zone, Ward, AddressNo, Street, SupportDisability, Status, Lng, Lat, Search, Routes):
@@ -186,6 +166,7 @@ class Stop:
 
 This class will have the same functionalities with the above class, but with an additional `remove_duplicate` functions.
 
+*The code is in [`stop_query.py`](./src/sub_modules/stop_query.py)*
 ```python
 class StopQuery(query):
     def __init__(self):
@@ -227,9 +208,7 @@ When working on a Geograhic Coordinate Systems, especially working on a small ar
 
 The given data was given in (lat, lng) standard and can be ploted onto `geojson.io`, which is currently in $\texttt{WGS84}$ standard (that represent the Earth as a sphere). Therefore, using (lat, lng) to perform distance or other calculation will take a lot of effort and invole many trigonometry functions, which will dramatically decrease the performance of our programe.
 
-So, we need first convert $\texttt{WGS84}$ to $\texttt{EPSG: 3405}$, which is northen Vietname standard, that uses the projected (lat, lng) coordinate of a sphere to the coordinate of a plane (x, y).
-
-$\textbf{The program}$
+So, we need first convert $\texttt{WGS84}$ to $\texttt{EPSG: 3405}$, which is northen Vietname standard, that uses the projected (lat, lng) coordinate of a sphere to the coordinate of a plane (x, y)
 
 ```python
 from pyproj import Transformer
@@ -278,6 +257,41 @@ GeoJSON supports the following geometry types: Point, LineString, Polygon, Multi
 - Note: the coordinate should be lng/lat in geojson
 
 ### 3. `Path` and `PathQuery` classes.
+#### 3.1. `Path` class.
+
+A path will have a list of lat/lng coordinate (Most of them are not the `STOP`) which are use to indicate the the shape of path.
+
+```python
+class path:
+    def __init__(self, data):
+        lat, lng, RouteId, RouteVarId = data
+        self._lat = lat
+        self._lng = lng
+        self._RouteId = RouteId
+        self._RouteVarId = RouteVarId
+    # detail implementation are in the code
+```
+#### 3.2. `PathQuery` class.
+
+This query class is almost the same as the previouse twos, also inherits some major functions in the `query` parent class.
+
+```python
+from path import path
+from query import query
+import json
+
+class path_query(query):
+    def __init__(self):
+        super().__init__()
+
+    def extract(self):
+        with open("../../data/paths.json", "r", encoding="utf8") as file:
+            for line in file:
+                data = json.loads(line)
+                self.push(path([data["lat"], data["lng"], data["RouteId"], data["RouteVarId"]]))
+# Path: src/query.py
+            file.close()
+```
 
 ### 4.  Research about `shapely` library in python.
 #### 4.1. Overview
@@ -311,21 +325,115 @@ ip = Point(0.5, 0.5)
 line = LineString([(0, 0), (1, 0), (1, 1), (0, 1)])
 dist = line.project(ip)  # dist is now 0.5 not 1.5 or 2.5
 ```
-
 **Can be used to solve:** finding distance between stops.
 
 - `object.intersection(other)` and `object.interpolate(distance[, normalized=False])` will be often use.
 
-### 4.3. Intended usages.
-
-**will fill out later**
-
 ### 5. Research about `rtree` library in python.
-### 5.1 Overview.
+#### 5.1. Overview.
 
 RTree is a powerful spatial data management systems, which provide you with efficently spatial queries (search for nearest point, etc...).
 
-Although `RTree` is so powerfull with spatial data, in this project, we might only use it to find the nearest point from a set of points along the bus route to our current location/destination.
+Normally, `Rtree` will store data in form of *bounding box*, which is a box denoted by its upper-left and bottom-right corners.
+
+Having `RTree` in this project, I will use it as a spatial database for `shapely` objects, and use it to find the nearest point from a set of points along the bus route to our current location/destination.
+
+**Example:** storing and retrive data from rtree
+
+```python
+import rtree
+idx = rtree.Index()
+# Define some sample data
+object1_bbox = (0, 0, 10, 10)
+object2_bbox = (5, 5, 15, 15)
+
+# Add objects to the index with unique IDs
+idx.insert(1, object1_bbox)
+idx.insert(22, object2_bbox)
+# Define your query rectangle
+query_bbox = (7, 7, 12, 12)
+
+# Find objects intersecting the query rectangle
+for item_id in idx.intersection(query_bbox):
+    print(f"Found object {item_id}")
+```
+
+#### 5.2. Usefull functions
+- `Index()`: Creates an R-Tree index object to manage your spatial data.
+- `insert(id, bbox)`: Inserts an object into the index with a unique identifier (id) and its bounding box (bbox) of the form as the bound of above shapely's `.bounds` function.
+- `insert_many(iterable)`: Efficiently inserts multiple objects from an iterable (like a list) into the index.
+- `intersection(bbox)`: Performs an intersection search, returning IDs of objects whose bounding boxes intersect with the specified query rectangle (bbox).
+- `nearest(point, n=1)`: Finds the nearest n objects (default: 1) to a given query point. Returns a list of tuples containing (ID, distance).
+- `delete(id, bbox=None)`: Removes an object from the index identified by its ID and optionally its bounding box (if available).
+- `write(filename)` and `read(filename)`: Persist the R-Tree data to a file (filename) for later loading.
+
+#### 5.3. Using Rtree with shapely.
+
+Because rtree manages geometry objects as bounding boxes, so when we insert an shapyly object to rtree, we need to in search its bounding.
+
+```python
+from rtree import Index
+import rtree
+import shapely.geometry as sg
+
+
+# Define some Shapely geometries
+point = sg.Point(10, 20)
+line = sg.LineString([(5, 5), (15, 15)])
+polygon = sg.Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
+
+# Create an R-Tree index
+idx = Index()
+
+# Add the geometries to the index
+idx.insert(1, point.bounds, obj=point)
+nearest_geometry = idx.nearest((10, 10, 20,     20), 1)
+print(list(nearest_geometry))  # Find the nearest geometry to a points in a list of index
+# Output: [1]
+```
+
+### 6. Using large language models
+#### 6.1. Overview
+
+To know to use what function to search by prompting, I will need a language model for understanding what user want to find.
+
+After took a look at some common models's pricing, I choose the "Claude 3 - Haiku" model, here is the pricing.
+![alt text](image.png)
+
+#### 6.2. Using the model to prompting.
+
+For privarcy reasons, I will story some sensitive information, my API key, in a `.env` file.
+
+```python
+import anthropic
+import dotenv
+import os
+
+dotenv.load_dotenv()
+anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
+client = anthropic.Anthropic(
+    api_key=anthropic_api_key,
+)
+
+message = client.messages.create(
+    model="claude-3-opus-20240229",
+    max_tokens=1000,
+    temperature=0.0,
+    system="Respond only as short as possible.",
+    messages=[
+        {"role": "user", "content": "How are you today?"}
+    ]
+)
+
+print(message.content)
+```
+
+**The respone:**
+```
+[ContentBlock(text="I'm doing well, thank you for asking! As an AI language model, I don't have feelings, but I'm functioning properly and ready to assist you with any questions or tasks you may have. How can I help you today?", type='text')]
+```
+
+#### 6.3.
 
 ## Week 07
 
@@ -334,7 +442,7 @@ In this week's assignments I need to build graph, and doing a shortest path find
 *Things to plan out:*
 - Graph structure
 - Graph logic, construction, considered point...
--
+
 *To do:*
 - Extract and build graph.
 - plan to construct the graph, step by step

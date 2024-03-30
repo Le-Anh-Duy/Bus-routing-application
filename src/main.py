@@ -1,24 +1,32 @@
-# # main to test the code
-from route_var_query import RouteVarQuery
-from route_var import RouteVar
-import json
-from query import query
+from sub_modules import path_query, stop_query, route_var_query
 
-tmp = [] #list of vars
-with open("../data/vars.json", "r", encoding="utf8") as file:
-    for line in file:
-        data = json.loads(line)
-        for d in data: # d is a dict
-            value_of_field = []
-            for v in d:
-                value_of_field.append(d[v])
-            print(value_of_field)
+class myApp:
+    def __init__(self, dataPath):
+        self.pathQuery = path_query.PathQuery()
+        self.stopQuery = stop_query.StopQuery()
+        self.routeVarQuery = route_var_query.RouteVarQuery()
 
-        tmp.append(RouteVar(value_of_field))
+        self.pathQuery.extract(dataPath + "paths.json")
+        self.stopQuery.extract(dataPath + "stops.json")
+        self.routeVarQuery.extract(dataPath + "vars.json")
+
+    def run(self, destPath):
+        self.pathQuery.outputAsCSV(self.pathQuery._list, destPath + "path.csv")
+        self.routeVarQuery.outputAsCSV(self.routeVarQuery._list, destPath + "route_var.csv")
+        self.stopQuery.outputAsCSV(self.stopQuery._list, destPath + "stop.csv")
+        self.pathQuery.outputAsJSON(self.pathQuery._list, destPath + "path.json")
+        self.routeVarQuery.outputAsJSON(self.routeVarQuery._list, destPath + "route_var.json")
+        self.stopQuery.outputAsJSON(self.stopQuery._list, destPath + "stop.json")
+        pass
+
+    def search(self):
+        print(len(self.routeVarQuery.searchBy(["_runningTime", "_distance"], "a[0] < 100 and a[1] < 50000", "routeVar")))
+#{"class": "routeVar", "attributes": ["_runningTime", "_distance"], "condition": "a[0] < 10 and a[1] < 5"}
+
+if __name__ == "__main__":
+    # load data into the app
+    app = myApp("../data/")
 
 
-
-myQuery = RouteVarQuery()
-myQuery.load(tmp)
-myQuery.outputAsCSV(myQuery._list, "test01.csv", tmp[0].get_keys())
-myQuery.outputAsJSON(myQuery._list, "test01.json")
+    app.run("../output/")
+    app.search()

@@ -1,7 +1,6 @@
-from query import query
-from route_var import RouteVar
+from sub_modules.query import query
+from sub_modules.route_var import RouteVar
 import json
-import csv
 
 class RouteVarQuery(query):
     def __init__(self):
@@ -16,7 +15,10 @@ class RouteVarQuery(query):
                     value_of_field = []
                     for v in d:
                         value_of_field.append(d[v])
-                    print(value_of_field)
+
 
                 tmp.append(RouteVar(value_of_field))
         self._list = tmp
+        file.close()
+
+        print("extracted route_var data")
