@@ -7,8 +7,8 @@
 <br>
 <br>
 <br>
-<h1 style="font-size:80px">Techical report</h1>
-<h6 style="font-size:20px">Programming technique - lab</h6>
+<h1 style="font-size:80px">Technical report</h1>
+<h6 style="font-size:20px">Programming Technique - Lab section</h6>
 <br>
 <br>
 <br>
@@ -85,8 +85,8 @@
     - [2.1. Query classes.](#21-query-classes)
     - [2.2. Data classes.](#22-data-classes)
 - [Week 05](#week-05)
-  - [1. Prepare the parent class](#1-prepare-the-parent-class)
-    - [1.1. Analize the given requirements](#11-analize-the-given-requirements)
+  - [1. Prepare the parent class.](#1-prepare-the-parent-class)
+    - [1.1. Analize the given requirements.](#11-analize-the-given-requirements)
     - [1.2. Inspecting the code `query.py`.](#12-inspecting-the-code-querypy)
       - [1.2.1. `push` and `load` functions.](#121-push-and-load-functions)
       - [1.2.2. `searchBy(seft, atts, messageCond, className)` functions.](#122-searchbyseft-atts-messagecond-classname-functions)
@@ -95,7 +95,7 @@
     - [2.1. Analize the given file.](#21-analize-the-given-file)
     - [2.2. Build the `RouteVar` class.](#22-build-the-routevar-class)
     - [2.3. Build the `RouteVarQuery` class.](#23-build-the-routevarquery-class)
-  - [3. Working with `stop.json` file.](#3-working-with-stopjson-file)
+  - [3. Working with `stops.json` file.](#3-working-with-stopsjson-file)
     - [3.1. Build the `stop` class.](#31-build-the-stop-class)
     - [3.2. Build the stop `stopQuerry` class.](#32-build-the-stop-stopquerry-class)
     - [3.3. Two additional classes.](#33-two-additional-classes)
@@ -111,10 +111,10 @@
     - [4.2. Usefull functions](#42-usefull-functions)
   - [5. Research about `rtree` library in python.](#5-research-about-rtree-library-in-python)
     - [5.1. Overview.](#51-overview)
-    - [5.2. Usefull functions](#52-usefull-functions)
+    - [5.2. Usefull functions.](#52-usefull-functions)
     - [5.3. Using Rtree with shapely.](#53-using-rtree-with-shapely)
-  - [6. Using large language models](#6-using-large-language-models)
-    - [6.1. Overview](#61-overview)
+  - [6. Using large language models.](#6-using-large-language-models)
+    - [6.1. Overview.](#61-overview)
     - [6.2. Using the model to prompting.](#62-using-the-model-to-prompting)
     - [6.3. Apply to the app.](#63-apply-to-the-app)
 - [References](#references)
@@ -129,7 +129,8 @@ This report details the development of a **bus management system**, the solo por
 
 **User manual:** The current application uses a user-friendly console interface for interaction, relying on keyboard input for navigation.
 
-![interface](./report_pictures/image-2.png)
+<center><img src="./report_pictures/image-2.png" height="200"></center>
+
 
 While core functionalities are operational, the application is currently in development. This means some feature might be litmite So please type correctly when using options *[2], [3], [4]* and the options *[1]* can be used when the internet is connected only.
 
@@ -138,11 +139,13 @@ While core functionalities are operational, the application is currently in deve
 
 This option lets users experience the integrated language model to enhance the searching functionalyties.
 
-![Using](./report_pictures/image-3.png)
+<center><img src="./report_pictures/image-3.png" height="200"></center>
+
 
 Users just need to type in the message, which may vary from personal conditions, to specific infomation of the stops. After receiving the requirements, the program makes some 'API' call to get the responds.
 
-![Respond img](./report_pictures/image-4.png)
+<!-- ![Respond img](./report_pictures/image-4.png) -->
+<center><img src="./report_pictures/image-4.png" height="200"></center>
 
 After it completed analizing the message, for the purpose of showcasing the search function works, we will see a console message that tell us what the program is searching for.
 
@@ -154,19 +157,25 @@ In case the first option isn't working, users can try manualy searching with thi
 
 This option will first requires user to specify the searching objects.
 
-![alt text](./report_pictures/image-5.png)
+<!-- ![alt text](./report_pictures/image-5.png) -->
+<center><img src="./report_pictures/image-4.png" height="200"></center>
 
 After chosing the object, the interface provides options for users to specify various search criteria (which are attributes in the class).
 
-![alt text](./report_pictures/image-6.png)
+<!-- ![alt text](./report_pictures/image-6.png) -->
+<center><img src="./report_pictures/image-6.png" height="200"></center>
+
 
 When finished chosing the attribute, user will have a sections where they can tell the program to search base on the condition, the conditions should be presented in format that *Python* can understand.
 
-![alt text](./report_pictures/image-7.png)
+<!-- ![alt text](./report_pictures/image-7.png) -->
+<center><img src="./report_pictures/image-7.png"></center>
+
 
 After filled out all the search paramenters, users can now name their files and chose the desired output format.
 
 ![alt text](./report_pictures/image-8.png)
+<!-- <center><img src="./report_pictures/image-8.png" height="200"> -->
 
 When the search is completed, the system displays relevant search results based on the chosen criteria.
 
@@ -174,7 +183,8 @@ When the search is completed, the system displays relevant search results based 
 
 This option is use as a testing tool of the program. When running it gives you the extracted data of 'stop', 'routeVar' or 'path'.
 
-![alt text](./report_pictures/image-9.png)
+<!-- ![alt text](./report_pictures/image-9.png) -->
+<center><img src="./report_pictures/image-9.png" heigh="200px"></center>
 
 There is nothing to special, users just need type in and it will give them the file of extracted datas.
 
@@ -198,7 +208,9 @@ The `map_with_lines.html` file can be opended in any browser, and display a full
 
 The `map.geojson` should have data of 'GeoJSON' objects so users can use it to plot on [geojson.io](geojson.io).
 
-![alt text](./report_pictures/image-15.png)
+<!-- ![alt text](./report_pictures/image-15.png) -->
+<center><img src="./report_pictures/image-15.png" height="300"></center>
+
 
 <div style="page-break-after: always"></div>
 
@@ -209,7 +221,8 @@ Move on the technical sections. This sections give us an overview how files and 
 
 ### 1. File management.
 
-![alt text](./report_pictures/image-16.png)
+<!-- ![alt text](./report_pictures/image-16.png) -->
+<center><img src="./report_pictures/image-16.png" height="300"></center>
 
 - The **data** folder is where the data is stored, like `path.json`, `vars.json`, `stops.json`.
 - The **logs** folder is where all the logs, messages are writen.
@@ -227,19 +240,23 @@ Move on the technical sections. This sections give us an overview how files and 
 
 With further explaination will come at later sections. Due to the query classes share some method that are identical, so they will all inherit from one parent class
 
-![alt text](./report_pictures/image-17.png)
+<!-- ![alt text](./report_pictures/image-17.png) -->
+<center><img src="./report_pictures/image-17.png" height="400"></center>
 
 #### 2.2. Data classes.
 **Route var class**
-![alt text](./report_pictures/image-18.png)
+<!-- ![alt text](./report_pictures/image-18.png) -->
+<center><img src="./report_pictures/image-18.png" height="400"></center>
 
 **Path class**
-![alt text](./report_pictures/image-19.png)
+<!-- ![alt text](./report_pictures/image-19.png) -->
+<center><img src="./report_pictures/image-19.png" height="400"></center>
 
 **Stop class**
 Because the [`stops.json`](./data/stops.json) don't give us the stops directly. becuase the stops are inside a list of stop attached to the route variations. So to have a more organized structure and to reserse the intentions of the data, the `RouteOfStop` class is necessary.
 
-![alt text](./report_pictures/image-20.png)
+<!-- ![alt text](./report_pictures/image-20.png) -->
+<center><img src="./report_pictures/image-20.png" height="400"></center>
 
 <div style="page-break-after: always"></div>
 
@@ -247,8 +264,8 @@ Because the [`stops.json`](./data/stops.json) don't give us the stops directly. 
 ## <center><h3>Week 05</h3></center>
 
 
-### 1. Prepare the parent class
-#### 1.1. Analize the given requirements
+### 1. Prepare the parent class.
+#### 1.1. Analize the given requirements.
 
 We will examine the `RouteVarQuery` and `StopQuery` classes. They share some methods.
 
@@ -375,15 +392,15 @@ class RouteVarQuery(query):
         self._list = tmp
 ```
 
-### 3. Working with [`stop.json`](./data/stops.json) file.
+### 3. Working with [`stops.json`](./data/stops.json) file.
 
-This file contains a series of stops on each line, these stop will represent the path that buses take, they belong to some route variations. So in each line, there are the `routeId` and `routeVarId` attached to the list of stops.
+This file contains a series of stops on each line, these stopd will represent the path that buses take, they belong to some route variations. So in each line, there are the `routeId` and `routeVarId` attached to the list of stops.
 
-To extract the stops, I extracted the stops from the stop list of each route. Therefore, some of the stop, which are belong to multiple routes, will be duplicated and I will handle that situation in the later part of this sections.
+To extract the stops, we need to extract the stops from the stop list of each route variations. Therefore, some of the stop, which are belong to multiple routes, will be duplicated and I will handle that situation in the later part of this sections.
 
 #### 3.1. Build the `stop` class.
 
-First we need to build the `stop` class, which contains all the necessary properties of the stops.
+First we need to build the `stop` class, which is used to manage the basic infomation of a bus stop.
 
 *The code is in [`stop.py`](./src/sub_modules/stop.py)*
 ```python
@@ -407,7 +424,7 @@ class Stop:
 
 #### 3.2. Build the stop `stopQuerry` class.
 
-This class will have the same functionalities with the above class, but with an additional `remove_duplicate` functions.
+This class will have the same functionalities with the above class, but with a custom extracter to extract data and `remove_duplicate` functions to remove duplicate.
 
 *The code is in [`stop_query.py`](./src/sub_modules/stop_query.py)*
 ```python
@@ -455,7 +472,7 @@ When working on a Geograhic Coordinate Systems, especially working on a small ar
 
 The given data was given in (lat, lng) standard and can be ploted onto `geojson.io`, which is currently in $\texttt{WGS84}$ standard (that represent the Earth as a sphere). Therefore, using (lat, lng) to perform distance or other calculation will take a lot of effort and invole many trigonometry functions, which will dramatically decrease the performance of our programe.
 
-So, we need first convert $\texttt{WGS84}$ to $\texttt{EPSG: 3405}$, which is northen Vietname standard, that uses the projected (lat, lng) coordinate of a sphere to the coordinate of a plane (x, y)
+So, we need first convert $\texttt{WGS84}$ to $\texttt{EPSG: 3405}$, which is Vietnamese standard projection system, that projected (lat, lng) coordinate of a sphere to the coordinate of a plane (x, y).
 
 ```python
 from pyproj import Transformer
@@ -472,7 +489,7 @@ class converter:
         return x, y
 ```
 
-For the simplycity and the reuseability of the code, i will put it in a class and make it a module.
+For the simplycity and the reuseability of the code, the converter will be put in a class and serve as a module.
 
 ### 2. Research bout `geojson.io`.
 [geojson.io](htpp://geojson.io/) is a quick, simple tool for creating, viewing, and sharing spatial data. This website uses `.geojson` format to plot the data onto it.
@@ -520,7 +537,7 @@ class path:
 ```
 #### 3.2. `PathQuery` class.
 
-This query class is almost the same as the previouse twos, also inherits some major functions in the `query` parent class.
+This query class is almost the same as the previouse twos, also inherits from  `query` parent class for its functions. Like the twos above, we also need to make a custom `extract` method for this class.
 
 ```python
 from path import path
@@ -543,9 +560,7 @@ class path_query(query):
 ### 4.  Research about `shapely` library in python.
 #### 4.1. Overview
 
-`shapely` is a python library for working with geometric objects in two-dimensional space. It is open-source and BSD-licensed
-
-It is usally used to create, maniplulate, and analize geometric objects like points, lines, polygons.... `shaply` provide user-friendly interface for geometric data. Therefore, it is ideal to choose `shapely` for tasks involving spatial data analysis, like:
+`shapely` is a python library for working with geometric objects in two-dimensional space. It is usally used to create, maniplulate, and analize geometric objects like points, lines, polygons.... Also, `shaply` provide us a user-friendly interface for geometric data. Therefore, it is ideal to choose `shapely` for tasks involving spatial data analysis, like:
 - Finding areas and perimeters.
 - Checking for geometric relationships, (intersection, containment,...).
 - Performing spatial operation, (buffering, offset, ...).
@@ -579,11 +594,9 @@ dist = line.project(ip)  # dist is now 0.5 not 1.5 or 2.5
 ### 5. Research about `rtree` library in python.
 #### 5.1. Overview.
 
-RTree is a powerful spatial data management systems, which provide you with efficently spatial queries (search for nearest point, etc...).
+`RTree` is a powerful spatial data management system, which provide us with efficently spatial queries (search for nearest point, etc...). Normally, `Rtree` will store data in form of *bounding box*, which is a box that are denoted by its upper-left and bottom-right corners.
 
-Normally, `Rtree` will store data in form of *bounding box*, which is a box denoted by its upper-left and bottom-right corners.
-
-Having `RTree` in this project, I will use it as a spatial database for `shapely` objects, and use it to find the nearest point from a set of points along the bus route to our current location/destination.
+Having `RTree` in this project, it will be used as a spatial database for `shapely` objects, and use it to find the nearest point from a set of points along the bus route to our current location/destination.
 
 **Example:** storing and retrive data from rtree
 
@@ -605,7 +618,7 @@ for item_id in idx.intersection(query_bbox):
     print(f"Found object {item_id}")
 ```
 
-#### 5.2. Usefull functions
+#### 5.2. Usefull functions.
 - `Index()`: Creates an R-Tree index object to manage your spatial data.
 - `insert(id, bbox)`: Inserts an object into the index with a unique identifier (id) and its bounding box (bbox) of the form as the bound of above shapely's `.bounds` function.
 - `insert_many(iterable)`: Efficiently inserts multiple objects from an iterable (like a list) into the index.
@@ -616,7 +629,7 @@ for item_id in idx.intersection(query_bbox):
 
 #### 5.3. Using Rtree with shapely.
 
-Because rtree manages geometry objects as bounding boxes, so when we insert an shapyly object to rtree, we need to in search its bounding.
+Because rtree manages geometry objects as bounding boxes, so when we insert an `Shapyly` object to `rtree`, we need to insert its bounding.
 
 ```python
 from rtree import Index
@@ -639,17 +652,18 @@ print(list(nearest_geometry))  # Find the nearest geometry to a points in a list
 # Output: [1]
 ```
 
-### 6. Using large language models
-#### 6.1. Overview
+### 6. Using large language models.
+#### 6.1. Overview.
 
-To know to use what function to search by prompting, I will need a language model for understanding what user want to find.
+To know which function is best suit to search for the user's messages, we will need a language model for understanding what users want to find.
 
 After took a look at some common models's pricing, I choose the "Claude 3 - Haiku" model, here is the pricing.
-![alt text](./report_pictures/image.png)
+<!-- ![alt text](./report_pictures/image.png) -->
+<center><img src="./report_pictures/image.png" height="400"></center>
 
 #### 6.2. Using the model to prompting.
 
-For privarcy reasons, I will story some sensitive information, my API key, in a `.env` file.
+To ensure privacy infomation won't be leaked out, sensitive information, like API key..., will be stored in a `.env` file and could only be access as a evironment variable.
 
 ```python
 import anthropic
@@ -675,16 +689,16 @@ message = client.messages.create(
 print(message.content)
 ```
 
-**The respone:**
-```
-[ContentBlock(text="I'm doing well, thank you for asking! As an AI language model, I don't have feelings, but I'm functioning properly and ready to assist you with any questions or tasks you may have. How can I help you today?", type='text')]
+**The respond:**
+```json
+[ContentBlock(text="I'm doing well.... How can I help you today?", type='text')]
 ```
 
 #### 6.3. Apply to the app.
 
-For esier management, i will implement the chat bot in [`promting_bot.py`](./src/sub_modules/promting_bot.py)
+To simplify the management process, the promting functionality will be implemented as a class, see [`promting_bot.py`](./src/sub_modules/promting_bot.py) for detail.
 
-Because the output tokens are way more expensive than the input tokens, so I tried to give the message as specific as possible, and let the bot output only the necessary info.
+The output tokens are way more expensive than the input tokens, the message we want to make should be as specific as possible so that the bot only outputs the necessary infomation.
 
 ```python
 import anthropic
@@ -722,8 +736,7 @@ class respondHandler():
         return message.content[0].text
 ```
 
-The respone should be somewhat like this so i can easily parse and use it for my program.
-
+The app will force the model to output in the below format, which is more convenient for using.
 ```json
 {"class": "_className_", "attributes": ["at1", "at2", ...], "conditions": "_condition string_"}
 ```
