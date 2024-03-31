@@ -1,14 +1,14 @@
-# solo-project
+<center><h1>Technical report for solo project</h1></center>
 
-Technical report on solo project
+
 ---
 ## Week 05 (Finished)
-### 1. Prepare some external modules before implementing the requering classes.
+### 1. Prepare the parent class
 #### 1.1. Analize the given requirements
 
-Lets look at the `RouteVarQuery` and `StopQuery` classes, they have some method that are prety much the same.
+We will examine the `RouteVarQuery` and `StopQuery` classes. They share some methods.
 
-So before implementing the two classes, I will make a class names `query` which will contain all the similar method of the twos. So when I implement the `RouteVarQuery` and `StopQuery` classes, I just need to inherit from the `query` class and add in some functions that are specified for each kind of object.
+To avoid code redundancy, we will create a parent class named `query`. Then, both `RouteVarQuery` and `StopQuery` can inherit from `Query` and only implement functions specific to their objects.
 
 
 #### 1.2. Inspecting the code [`query.py`](./src/sub_modules/query.py).
@@ -162,7 +162,7 @@ class Stop:
         self._routes = Routes
 ```
 
-### 3.2. Build the stop `stopQuerry` class.
+#### 3.2. Build the stop `stopQuerry` class.
 
 This class will have the same functionalities with the above class, but with an additional `remove_duplicate` functions.
 
@@ -179,7 +179,7 @@ class StopQuery(query):
         # Detail implementation are in the file
 ```
 
-### 3.3. Two additional classes.
+#### 3.3. Two additional classes.
 
 To get the most out of the `stops.json` file, we need to have way to manage the stops along the route variations. So I made two more classes.
 

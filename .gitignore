@@ -1,6 +1,7 @@
-*.exe
 /data
+/logs
 __pycache__/
 *.csv
 *.pdf
 *.env
+*.exe
