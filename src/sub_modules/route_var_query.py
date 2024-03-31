@@ -3,8 +3,8 @@ from sub_modules.route_var import RouteVar
 import json
 
 class RouteVarQuery(query):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, logger):
+        super().__init__(logger=logger)
 
     def extract(self, dest):
         tmp = []

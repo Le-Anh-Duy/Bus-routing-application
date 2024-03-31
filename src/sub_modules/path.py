@@ -3,8 +3,8 @@ class Path:
         lat, lng, RouteId, RouteVarId = data
         self._lat = lat
         self._lng = lng
-        self._routeId = RouteId
-        self._routeVarId = RouteVarId
+        self._routeId = int(RouteId)
+        self._routeVarId = int(RouteVarId)
 
     @property
     def lat(self):

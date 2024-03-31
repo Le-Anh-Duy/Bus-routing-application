@@ -10,6 +10,12 @@ class Stop:
         self._addressNo = AddressNo
         self._street = Street
         self._supportDisability = SupportDisability
+
+        if (SupportDisability == "Có"):
+            self._supportDisability = True
+        else:
+            self._supportDisability = False
+
         self._status = Status
         self._lng = Lng
         self._lat = Lat

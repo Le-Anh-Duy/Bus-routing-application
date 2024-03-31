@@ -15,6 +15,9 @@ class respondHandler():
         )
 
     def respond(self, messages):
+
+        print(f"responding, please wait...")
+
         message = self.client.messages.create(
             model="claude-3-opus-20240229",
             max_tokens=1000,
@@ -25,9 +28,11 @@ class respondHandler():
             ]
         )
 
+        print(f"responded!!")
+
         return message.content[0].text
 
-bot = respondHandler()
-s = bot.respond("find me a route variations that has running time less than 10 minutes and distance less than 5 km.")
+# bot = respondHandler()
+# s = bot.respond("find me a route variations that has running time less than 10 minutes and distance less than 5 km.")
 
-print(s)
+# print(s)

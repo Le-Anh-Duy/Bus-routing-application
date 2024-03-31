@@ -29,8 +29,9 @@ class RouteOfStop():
         }
 
 class RouteOfStopQuery(query):
-    def __init__(self):
-        super().__init__()
+
+    def __init__(self, logger):
+        super().__init__(logger=logger)
 
     def extract(self, dest):
         tmp = []
@@ -52,8 +53,9 @@ class RouteOfStopQuery(query):
         self._list = tmp
 
 class StopQuery(query):
-    def __init__(self):
-        super().__init__()
+
+    def __init__(self, logger):
+        super().__init__(logger=logger)
 
     def extract(self, dest):
         tmp = []

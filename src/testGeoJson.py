@@ -1,7 +1,7 @@
 import json
 import folium
 
-def create_geojson(latitudes, longitudes, filename='map.geojson'):
+def create_geojson(latitudes, longitudes, filename='../output/map.geojson'):
     features = []  # Connect the last point to the first point
     for i in range(len(latitudes) - 1):
         j = (i + 1)
@@ -26,6 +26,8 @@ def create_geojson(latitudes, longitudes, filename='map.geojson'):
     with open(filename, 'w') as f:
         json.dump(feature_collection, f)
 
+    print(f"GeoJSON saved as {filename}")
+
 def plot_on_map(latitudes, longitudes):
     map_center = [sum(latitudes)/len(latitudes), sum(longitudes)/len(longitudes)]
     my_map = folium.Map(location=map_center, zoom_start=5)
@@ -39,15 +41,18 @@ def plot_on_map(latitudes, longitudes):
         line = folium.PolyLine(locations=[[latitudes[i], longitudes[i]], [latitudes[i+1], longitudes[i+1]]], color='blue')
         my_map.add_child(line)
 
-    my_map.save('map_with_lines.html')
+    my_map.save('../output/map_with_lines.html')
+    print("Map saved as map_with_lines.html")
 
-with open("../data/paths.json", "r") as file:
-    for line in file:
-        s = json.loads(line)
+def run():
+    print("Running testGeoJson.py")
+    with open("../data/paths.json", "r") as file:
+        for line in file:
+            s = json.loads(line)
 
-        latitudes = s["lat"]  # Example latitudes
-        longitudes = s["lng"]  # Example longitudes
+            latitudes = s["lat"]  # Example latitudes
+            longitudes = s["lng"]  # Example longitudes
 
-        create_geojson(latitudes, longitudes, filename='map.geojson')
-        plot_on_map(latitudes, longitudes)
-        break
+            create_geojson(latitudes, longitudes, filename='../output/map.geojson')
+            plot_on_map(latitudes, longitudes)
+            break

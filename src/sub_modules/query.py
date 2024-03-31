@@ -1,11 +1,13 @@
+from sub_modules.log_handler import Logger
 import json
 import csv
 
 class query:
 
     #_data should be a list of objects
-    def __init__(self):
+    def __init__(self, logger):
         self._list = []
+        self.logger = logger
 
     def push(self, element):
         self._list.append(element)
@@ -18,6 +20,7 @@ class query:
 
     def outputAsCSV(self, _datas, dest): #CSV of stops
         # print(fields)
+        self.logger.info(f"Writing to {dest}")
         if len(_datas) == 0:
             print("No data to write")
             return
@@ -34,6 +37,7 @@ class query:
         print("file written at " + dest)
 
     def outputAsJSON(self, _datas, dest):
+        self.logger.info(f"Writing to {dest}")
         if len(_datas) == 0:
             print("No data to write")
             return
@@ -49,10 +53,11 @@ class query:
     def searchBy(self, atts, messageCond, className): #list att
         # atts is a list of attributes to be searched
         # conditions is a string that will be evaluated
-
+        self.logger.info(f"Calling {className}.SearchBy to Searching by {atts} with condition: {messageCond}")
         print(f"Calling {className}.SearchBy to Searching by {atts} with condition: {messageCond}")
 
         def cond(a, conditions):
+            # self.logger.info(f"Checking condition: {conditions}")
             try:
                 # Evaluate the condition string
                 result = eval(conditions)
