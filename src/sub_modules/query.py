@@ -1,6 +1,21 @@
 from sub_modules.log_handler import Logger
+from sub_modules.conditions_modules.fuzzy_compare import fuzzy_compare
+from thefuzz import fuzz
+from unidecode import unidecode
+
+fuzzy_compare("a", "b")
+
 import json
 import csv
+
+# def fuzzy_compare(a, b):
+#     a = unidecode(a)
+#     a = a.lower()
+#     b = unidecode(b)
+#     b = b.lower()
+#     # if fuzz.ratio(a, b) >= 50:
+#     #     print(a, '----------', b)
+#     return fuzz.ratio(a, b) >= 80
 
 class query:
 
@@ -57,7 +72,7 @@ class query:
         print(f"Calling {className}.SearchBy to Searching by {atts} with condition: {messageCond}")
 
         def cond(a, conditions):
-            # self.logger.info(f"Checking condition: {conditions}")
+            self.logger.info(f"Checking condition: {conditions}")
             try:
                 # Evaluate the condition string
                 result = eval(conditions)
@@ -77,5 +92,7 @@ class query:
                 retList.append(element)
         if (len(retList) == 0):
             print("No data found")
+        else:
+            print(f"Found {len(retList)} results")
 
         return retList
