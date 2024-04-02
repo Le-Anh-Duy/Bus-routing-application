@@ -21,6 +21,7 @@
     <h5>Author:  </h5>
     <h5>Student ID:   </h5>
     <h5>Class:  </h5>
+    <h5>Version:  </h3>
   </div>
   <div class='child2'>
 
@@ -30,6 +31,7 @@
     <h5>Lê Anh Duy</h5>
     <h5>23127011</h5>
     <h5>23CLC03</h5>
+    <h5>2.0</h5>
   </div>
 </div>
 
@@ -89,7 +91,7 @@
     - [1.1. Analize the given requirements.](#11-analize-the-given-requirements)
     - [1.2. Inspecting the code `query.py`.](#12-inspecting-the-code-querypy)
       - [1.2.1. `push` and `load` functions.](#121-push-and-load-functions)
-      - [1.2.2. `searchBy(seft, atts, messageCond, className)` functions.](#122-searchbyseft-atts-messagecond-classname-functions)
+      - [1.2.2. `searchBy(seft, atts, messageCond, className, keywords)` functions.](#122-searchbyseft-atts-messagecond-classname-keywords-functions)
       - [1.2.3. `outputAsCSV` and `outputAsJSON`.](#123-outputascsv-and-outputasjson)
   - [2. Working with `vars.json` file.](#2-working-with-varsjson-file)
     - [2.1. Analize the given file.](#21-analize-the-given-file)
@@ -311,7 +313,7 @@ class query:
 ##### 1.2.1. `push` and `load` functions.
 Because the class will be uses to manage a list of objects, so these functions will let users append new elements into our structure.
 
-##### 1.2.2. `searchBy(seft, atts, messageCond, className)` functions.
+##### 1.2.2. `searchBy(seft, atts, messageCond, className, keywords)` functions.
 
 We are required to search by prompting, so I think it is best to make the condition to be customizable.
 
@@ -321,10 +323,11 @@ My plan is to use some LLM to process the prompting and extract the conditions a
 
 For example: By runing the following script will give us a list, and some log messages.
 ```python
-searchBy(["_runningTime", "_distance"], "a[0] < 100 and a[1] < 50000", "routeVar")
+searchBy(["_name_"], "fuzzy_compare(a[0], 'benh vien')", "stop", "['benh vien']")
 ```
 *output:*
 ![alt text](./report_pictures/image-1.png)
+<!-- ![alt text](image.png) -->
 
 ##### 1.2.3. `outputAsCSV` and `outputAsJSON`.
 These functions are uses to output the desired format for user.
@@ -657,7 +660,7 @@ print(list(nearest_geometry))  # Find the nearest geometry to a points in a list
 
 To know which function is best suit to search for the user's messages, we will need a language model for understanding what users want to find.
 
-After took a look at some common models's pricing, I choose the "Claude 3 - Haiku" model, here is the pricing.
+After took a look at some common models's pricing, (and accidentally chosing the opus model and cost a lot), I choose the "Claude 3 - Haiku" model, here is the pricing.
 <!-- ![alt text](./report_pictures/image.png) -->
 <center><img src="./report_pictures/image.png" height="400"></center>
 
@@ -677,7 +680,7 @@ client = anthropic.Anthropic(
 )
 
 message = client.messages.create(
-    model="claude-3-opus-20240229",
+    model="claude-3-haiku-20240307",
     max_tokens=1000,
     temperature=0.0,
     system="Respond only as short as possible.",
@@ -722,7 +725,7 @@ class respondHandler():
         print(f"responding, please wait...")
 
         message = self.client.messages.create(
-            model="claude-3-opus-20240229",
+            model="claude-3-haiku-20240307",
             max_tokens=1000,
             temperature=0.0,
             system = f"given the data [{self.pathData}, {self.routeVarData}, {self.stopData}], return the class, the list of attribute use in condition and condition string that python understand, each attribute in the condition should be 'a[i]', with 'i' is the index in the returned atrributes list, respond only in json format in one line.",
