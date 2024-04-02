@@ -1,21 +1,8 @@
 from sub_modules.log_handler import Logger
-from sub_modules.conditions_modules.fuzzy_compare import fuzzy_compare
-from thefuzz import fuzz
-from unidecode import unidecode
-
-fuzzy_compare("a", "b")
-
+from sub_modules.fuzzy_compare import fuzzy_compare
+from sub_modules.fuzzy_compare import keyword_check
 import json
 import csv
-
-# def fuzzy_compare(a, b):
-#     a = unidecode(a)
-#     a = a.lower()
-#     b = unidecode(b)
-#     b = b.lower()
-#     # if fuzz.ratio(a, b) >= 50:
-#     #     print(a, '----------', b)
-#     return fuzz.ratio(a, b) >= 80
 
 class query:
 
@@ -65,14 +52,15 @@ class query:
         jsonfile.close()
         print("file written at " + dest)
 
-    def searchBy(self, atts, messageCond, className): #list att
+    def searchBy(self, atts, messageCond, className, keywords): #list att
         # atts is a list of attributes to be searched
         # conditions is a string that will be evaluated
         self.logger.info(f"Calling {className}.SearchBy to Searching by {atts} with condition: {messageCond}")
-        print(f"Calling {className}.SearchBy to Searching by {atts} with condition: {messageCond}")
+        print(f"Calling {className}.SearchBy to Searching by {atts} with condition: {messageCond}, and with keyword: {keywords}")
 
         def cond(a, conditions):
             self.logger.info(f"Checking condition: {conditions}")
+            # print(f"Checking condition: {conditions}")
             try:
                 # Evaluate the condition string
                 result = eval(conditions)
@@ -81,7 +69,7 @@ class query:
                 else:
                     raise ValueError("Condition does not evaluate to a boolean value.")
             except Exception as e:
-                print(f"Error occurred while evaluating the condition: {e}")
+                # print(f"Error occurred while evaluating the condition: {e}")
                 return False
 
         # cond - conditions - callback functions
@@ -90,6 +78,17 @@ class query:
         for element in self._list:
             if cond([getattr(element, att) for att in atts], messageCond):
                 retList.append(element)
+            else:
+                cnt = 0
+                for keyword in keywords:
+                    for att in element.get_keys():
+                        if fuzzy_compare(keyword, str(getattr(element, att))):
+                            cnt += 1
+                            break
+
+                if cnt >= 1:
+                    retList.append(element)
+
         if (len(retList) == 0):
             print("No data found")
         else:

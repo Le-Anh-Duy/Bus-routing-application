@@ -37,20 +37,22 @@ class myApp:
         message = input("Please enter the message: ")
         message = unidecode(message)
         response = self.searchBot.respond(message)
-        response = json.loads(response)
+        print("------------------ respones ------------------")
         print(response)
+        print("----------------------------------------------")
+        response = json.loads(response)
 
-        className = response["class"]
-        attributes = response["attributes"]
-        condition = response["condition"]
+        searchResult = []
+        for obj in response:
+            className = obj["class"]
+            attributes = obj["attributes"]
+            condition = obj["condition"]
+            keyword = obj["keywordorname"]
 
-        searchResult = None
-        if (className == "stop"):
-            searchResult = self.stopQuery.searchBy(attributes, condition, className)
-        elif (className == "path"):
-            searchResult = self.pathQuery.searchBy(attributes, condition, className)
-        elif (className == "routeVar"):
-            searchResult = self.routeVarQuery.searchBy(attributes, condition, className)
+            if (className == "stop"):
+                searchResult = searchResult + self.stopQuery.searchBy(attributes, condition, className, keyword)
+            elif (className == "routeVar"):
+                searchResult = searchResult + self.routeVarQuery.searchBy(attributes, condition, className, keyword)
 
         name = input("what you want to name the output file: ")
         format = input("Please enter the format [csv, json]: ")
@@ -94,10 +96,10 @@ class myApp:
 
         searchResult = None
         if (className == "stop"):
-            searchResult = self.stopQuery.searchBy([a], condition, className)
+            searchResult = self.stopQuery.searchBy([a], condition, className, [])
         elif (className == "routeVar"):
-            searchResult = self.routeVarQuery.searchBy([a], condition, className)
-
+            searchResult = self.routeVarQuery.searchBy([a], condition, className, [])
+        print(f"Found {len(searchResult)} results")
         name = input("what you want to name the output file: ")
         format = input("Please enter the format [csv, json]: ")
 
